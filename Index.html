@@ -174,6 +174,10 @@
             <div>
                 <div class="row justify-content-center">
                     <div class="col-md-6">
+                        <div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
+                            <strong>Terimakasih!</strong> pesan anda sudah kami terima.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                         <form name="contact-form">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nama Lengkap</label>
@@ -228,14 +232,31 @@
         const scriptURL =
             'https://script.google.com/macros/s/AKfycby601mEuusL6hWMREVWXSdK_3U3YQ9NaANDFpM9MpLb67gwqKJWa0y7bfb6oQ20pjkqBg/exec'
         const form = document.forms['contact-form']
+        const btnKirim = document.querySelector('.btn-kirim');
+        const btnLoding = document.querySelector('.btn-loding');
+        const myAlert = document.querySelector('.my-alert');
+
 
         form.addEventListener('submit', e => {
             e.preventDefault()
+            //ketika tombol submit diklik
+            //tampilkan tombol Loading, hilangkan tombol kirim
+            btnLoding.classList.toggle('d-none');
+            btnKirim.classList.toggle('d-none');
             fetch(scriptURL, {
                     method: 'POST',
                     body: new FormData(form)
                 })
-                .then(response => console.log('Success!', response))
+                .then(response => {
+                    //tampilkan tombol Kirim, hilangkan tombol Loding
+                    btnLoding.classList.toggle('d-none');
+                    btnKirim.classList.toggle('d-none');
+                    //tampilkan alert
+                    myAlert.classList.toggle('d-none');
+                    // reset Formnya
+                    form.reset();
+                    console.log('Success!', response)
+                })
                 .catch(error => console.error('Error!', error.message))
         })
     </script>
